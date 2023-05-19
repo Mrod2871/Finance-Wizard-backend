@@ -1,17 +1,7 @@
 const express = require('express')
-const mongoose = require('mongoose')
+
 const incomeRouter = express.Router()
 const Income = require('../models/income')
-
-mongoose.connect(MONGODB_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-})
-
-mongoose.connection
-    .on("open", () => console.log("You are connected to mongoose"))
-    .on("close", () => console.log("You are disconnected to mongoose"))
-    .on("error", (error) => console.log(error))
 
 
 incomeRouter.get("/income", async (req, res)=>{
@@ -56,4 +46,4 @@ incomeRouter.put("/income/:id", async (req,res) => {
     }
 })
 
-modeule.exports = incomeRouter
+module.exports = incomeRouter
