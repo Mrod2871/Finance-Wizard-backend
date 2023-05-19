@@ -1,4 +1,20 @@
-app.get("/income", async (req, res)=>{
+const express = require('express')
+const mongoose = require('mongoose')
+const incomeRouter = express.Router()
+const Income = require('../models/income')
+
+mongoose.connect(MONGODB_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+})
+
+mongoose.connection
+    .on("open", () => console.log("You are connected to mongoose"))
+    .on("close", () => console.log("You are disconnected to mongoose"))
+    .on("error", (error) => console.log(error))
+
+
+incomeRouter.get("/income", async (req, res)=>{
     try{
         res.json(await Income.find({}))
     } catch(error){
@@ -7,7 +23,7 @@ app.get("/income", async (req, res)=>{
 })
 
 // income CREATE ROUTE
-app.post("/income", async (req, res) => {
+incomeRouter.post("/income", async (req, res) => {
     try {
         // send all income
         res.json(await Income.create(req.body));
@@ -18,7 +34,7 @@ app.post("/income", async (req, res) => {
 });
 
 // income DELETE ROUTE
-app.delete("/income/:id", async (req, res) => {
+incomeRouter.delete("/income/:id", async (req, res) => {
     try {
         res.json(await Income.findByIdAndRemove(req.params.id))
     } catch (error) {
@@ -28,7 +44,7 @@ app.delete("/income/:id", async (req, res) => {
 )
 
 // income UPDATE
-app.put("/income/:id", async (req,res) => {
+incomeRouter.put("/income/:id", async (req,res) => {
     try {
         // send all income
         res.json(
@@ -39,3 +55,5 @@ app.put("/income/:id", async (req,res) => {
         res.status(400).json(error)
     }
 })
+
+modeule.exports = incomeRouter
